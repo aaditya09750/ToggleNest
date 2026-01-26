@@ -1,26 +1,53 @@
 # ToggleNest - Team Task & Workflow Management Platform
 
-A complete full-stack MERN project for managing team tasks and workflows with Kanban board functionality.
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4.x-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Auth-FFB300?style=for-the-badge&logo=jsonwebtokens&logoColor=black)
+![Drag&Drop](https://img.shields.io/badge/Drag%20%26%20Drop-BeautifulDnD-7952B3?style=for-the-badge&logo=react&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-HTTP-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 
-## 🚀 Tech Stack
+A modern, full-stack MERN application for managing team projects, tasks, and workflows with a Kanban board, real-time activity log, and role-based access.
 
-**Frontend:**
-- React JS (Functional components + Hooks)
-- React Router DOM
-- React Beautiful DnD (Drag & Drop)
-- Tailwind CSS
-- Axios
+**Author:** Aaditya Gunjal
 
-**Backend:**
-- Node.js
-- Express.js
-- MongoDB (Mongoose)
-- JWT Authentication
-- bcryptjs
+---
 
-## 📁 Project Structure
+## Core Features
 
-```
+- **Authentication:** JWT-based login, registration, protected routes, role-based access (Admin/Team Member)
+- **Project Management:** Create, view, edit, delete projects; assign team members; set deadlines
+- **Kanban Task Board:** Drag & drop tasks between To Do, In Progress, Done; auto status update; task CRUD
+- **Dashboard:** Project/task stats, completion %, recent activity log
+- **Activity Logging:** Tracks all major actions (task/project/user changes)
+- **Notifications:** Real-time updates for team members
+- **Responsive UI:** Modern Tailwind CSS design, mobile-friendly
+
+---
+
+## Technology Stack
+
+| Technology          | Version | Purpose             |
+| ------------------- | ------- | ------------------- |
+| React               | 18.x    | Frontend framework  |
+| React Router DOM    | 6.x     | Client-side routing |
+| React Beautiful DnD | 13.x    | Kanban drag & drop  |
+| Tailwind CSS        | 3.x     | Styling             |
+| Axios               | 1.x     | HTTP requests       |
+| Node.js             | 18.x    | Backend runtime     |
+| Express             | 4.x     | Backend framework   |
+| MongoDB             | 6.x     | Database            |
+| Mongoose            | 7.x     | ODM for MongoDB     |
+| JWT                 | 9.x     | Authentication      |
+| bcryptjs            | 2.x     | Password hashing    |
+
+---
+
+## Project Structure
+
+```text
 ToggleNest/
 ├── Backend/
 │   ├── config/
@@ -45,26 +72,28 @@ ToggleNest/
     └── tailwind.config.js
 ```
 
-## 🔧 Installation & Setup
+---
+
+## Quick Start
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - MongoDB (local or Atlas)
 - npm or yarn
 
 ### Backend Setup
 
-1. Navigate to Backend folder:
 ```bash
 cd Backend
-```
-
-2. Install dependencies:
-```bash
 npm install
+# Configure .env (see below)
+npm run dev
+# Backend: http://localhost:5000
 ```
 
-3. Configure environment variables in `.env`:
+**.env Example:**
+
 ```env
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/togglenest
@@ -73,84 +102,66 @@ JWT_EXPIRE=7d
 NODE_ENV=development
 ```
 
-4. Start MongoDB (if using local):
-```bash
-mongod
-```
-
-5. Start backend server:
-```bash
-npm run dev
-```
-
-Backend will run on: `http://localhost:5000`
-
 ### Frontend Setup
 
-1. Navigate to Frontend folder:
 ```bash
 cd Frontend
-```
-
-2. Install dependencies:
-```bash
 npm install
+# Configure .env (see below)
+npm start
+# Frontend: http://localhost:3000
 ```
 
-3. Configure environment variables in `.env`:
+**.env Example:**
+
 ```env
 REACT_APP_API_URL=http://localhost:5000/api
 ```
 
-4. Start frontend development server:
-```bash
-npm start
-```
+---
 
-Frontend will run on: `http://localhost:3000`
+## Usage Flow
 
-## 📖 Features
+1. **Register/Login** - Create an account or login
+2. **Dashboard** - View overview statistics
+3. **Create Project** - Admin creates a project and assigns team members
+4. **Task Board** - Click on a project to access its Kanban board
+5. **Manage Tasks** - Create tasks and drag them between columns
+6. **Track Activity** - View all activities in the activity log
 
-### Authentication
-- ✅ User Registration (Name, Email, Password, Role)
-- ✅ User Login with JWT
-- ✅ Password hashing using bcryptjs
-- ✅ Protected routes
-- ✅ Role-based access (Admin / Team Member)
+---
 
-### Project Management
-- ✅ Create, View, Edit, Delete projects (Admin only for edit/delete)
-- ✅ Assign team members to projects
-- ✅ Project deadlines
+## UI & Design
 
-### Task Management (Kanban Board)
-- ✅ Three columns: To Do, In Progress, Done
-- ✅ Drag & Drop functionality
-- ✅ Task properties: Title, Description, Priority, Due Date, Assigned User
-- ✅ Auto status update on drag
-- ✅ Create, Edit, Delete tasks
+- Clean, modern Tailwind CSS design
+- Responsive layout for all devices
+- Smooth transitions and hover effects
+- Intuitive drag-and-drop Kanban board
+- Real-time activity logging and notifications
 
-### Dashboard
-- ✅ Total projects count
-- ✅ Completed tasks count
-- ✅ Pending tasks count
-- ✅ Completion percentage
-- ✅ Recent activity log
+---
 
-### Activity Logging
-- ✅ Task created, moved, completed
-- ✅ Project created, updated, deleted
-- ✅ User assignment changes
+## Security Features
 
-## 🎯 API Endpoints
+- Password hashing with bcryptjs
+- JWT token authentication
+- Protected API routes
+- Role-based authorization
+- Token verification middleware
+
+---
+
+## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
 - `GET /api/auth/me` - Get current user (Protected)
 - `GET /api/auth/users` - Get all users (Protected)
 
 ### Projects
+
 - `GET /api/projects` - Get all projects (Protected)
 - `GET /api/projects/:id` - Get single project (Protected)
 - `POST /api/projects` - Create project (Protected)
@@ -158,6 +169,7 @@ Frontend will run on: `http://localhost:3000`
 - `DELETE /api/projects/:id` - Delete project (Protected, Admin only)
 
 ### Tasks
+
 - `GET /api/tasks?project=projectId` - Get tasks (Protected)
 - `GET /api/tasks/:id` - Get single task (Protected)
 - `POST /api/tasks` - Create task (Protected)
@@ -165,13 +177,15 @@ Frontend will run on: `http://localhost:3000`
 - `DELETE /api/tasks/:id` - Delete task (Protected)
 
 ### Activities
+
 - `GET /api/activities?project=projectId` - Get activity logs (Protected)
 
-## 👤 Default Test Users
+---
 
-You need to register users through the app. First user can be Admin.
+## Default Test Users
 
-Example registration:
+Register users through the app. First user can be Admin.
+
 ```json
 {
   "name": "Admin User",
@@ -181,81 +195,79 @@ Example registration:
 }
 ```
 
-## 🎨 UI Screenshots
+---
 
-The application features:
-- Clean and modern design with Tailwind CSS
-- Smooth transitions and hover effects
-- Responsive layout
-- Intuitive drag-and-drop Kanban board
-- Real-time activity logging
-
-## 📝 Usage Flow
-
-1. **Register/Login** - Create an account or login
-2. **Dashboard** - View overview statistics
-3. **Create Project** - Admin creates a project and assigns team members
-4. **Task Board** - Click on a project to access its Kanban board
-5. **Manage Tasks** - Create tasks and drag them between columns
-6. **Track Activity** - View all activities in the activity log
-
-## 🔒 Security Features
-
-- Password hashing with bcryptjs
-- JWT token authentication
-- Protected API routes
-- Role-based authorization
-- Token verification middleware
-
-## 🛠️ Technologies Used
-
-| Technology | Purpose |
-|-----------|---------|
-| React | Frontend framework |
-| React Router | Client-side routing |
-| React Beautiful DnD | Drag and drop |
-| Tailwind CSS | Styling |
-| Axios | HTTP requests |
-| Node.js | Backend runtime |
-| Express | Backend framework |
-| MongoDB | Database |
-| Mongoose | ODM |
-| JWT | Authentication |
-| bcryptjs | Password hashing |
-
-## 📦 NPM Scripts
-
-### Backend
-- `npm start` - Start production server
-- `npm run dev` - Start development server with nodemon
-
-### Frontend
-- `npm start` - Start development server
-- `npm build` - Build for production
-- `npm test` - Run tests
-
-## 🐛 Troubleshooting
+## Troubleshooting
 
 **MongoDB Connection Error:**
+
 - Ensure MongoDB is running
 - Check MONGO_URI in .env file
 
 **CORS Error:**
+
 - Backend has CORS enabled by default
 - Check if ports match in .env files
 
 **Token Error:**
+
 - Clear localStorage in browser
 - Re-login to get new token
 
-## 📄 License
+---
 
-This project is created for portfolio and educational purposes.
+## NPM Scripts
 
-## 👨‍💻 Author
+### Backend
 
-Built with ❤️ as a MERN Stack demonstration project
+- `npm start` - Start production server
+- `npm run dev` - Start development server with nodemon
+
+### Frontend
+
+- `npm start` - Start development server
+- `npm build` - Build for production
+- `npm test` - Run tests
 
 ---
 
-**Happy Coding! 🚀**
+## Contact & Support
+
+![Email](https://img.shields.io/badge/Email-aadigunjal0975%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)
+![LinkedIn](https://img.shields.io/badge/LinkedIn-aadityagunjal0975-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)
+![WhatsApp](https://img.shields.io/badge/WhatsApp-Contact-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)
+
+**Get In Touch**
+
+- **Email:** [aadigunjal0975@gmail.com](mailto:aadigunjal0975@gmail.com)
+- **Phone:** +91 84335 09521
+- **LinkedIn:** [aadityagunjal0975](https://www.linkedin.com/in/aadityagunjal0975/)
+- **Location:** Dombivli, Maharashtra, India
+
+**Professional Inquiries Welcome** - Open to freelance projects, collaboration opportunities, and full-time positions.
+
+---
+
+## License
+
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge&logo=opensourceinitiative&logoColor=white)
+
+This project is created for portfolio and educational purposes.
+
+```
+MIT License
+
+Copyright (c) 2026 Aaditya Gunjal
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+```
+
+---
