@@ -58,7 +58,7 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-surface p-8 rounded-2xl shadow-xl border border-border-dark">
         <div>
-          <h2 className="mt-2 text-center text-3xl font-bold text-text-primary">
+          <h2 className="mt-2 text-center text-3xl font-semibold text-text-primary">
             Create your account
           </h2>
           <p className="mt-2 text-center text-sm text-text-secondary">
@@ -152,7 +152,7 @@ const Register = () => {
           </div>
 
           <div className="bg-surface border border-primary/30 rounded-lg p-3">
-            <p className="text-sm text-primary">
+            <p className="text-xs text-primary">
               <span className="font-semibold">Note:</span> First registered user
               becomes Admin automatically. All subsequent users will be Team
               Members.
@@ -163,7 +163,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300 shadow-lg hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
