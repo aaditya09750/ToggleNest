@@ -179,7 +179,7 @@ const ProjectForm = ({ project, onClose, onSuccess }) => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2.5 bg-primary hover:bg-secondary text-white rounded-xl font-semibold transition-smooth disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-glow text-sm"
+              className="px-6 py-2.5 bg-primary hover:bg-secondary text-white rounded-xl font-semibold transition-smooth disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               {loading
                 ? 'Saving...'

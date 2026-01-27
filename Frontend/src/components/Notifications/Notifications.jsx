@@ -177,7 +177,7 @@ const Notifications = () => {
                               {notification.type}
                             </span>
                             {!notification.read && (
-                              <span className="w-2 h-2 bg-primary rounded-full shadow-glow"></span>
+                              <span className="w-2 h-2 bg-primary rounded-full"></span>
                             )}
                           </div>
                           <p className="text-sm text-text-primary font-medium mb-1">

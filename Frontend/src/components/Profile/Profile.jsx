@@ -228,7 +228,7 @@ const Profile = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex items-center space-x-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-6 py-3 rounded-lg font-semibold transition-smooth disabled:opacity-50 shadow-glow"
+                  className="flex items-center space-x-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-6 py-3 rounded-lg font-semibold transition-smooth disabled:opacity-50"
                 >
                   <FiSave size={18} />
                   <span>{loading ? 'Saving...' : 'Save Changes'}</span>
@@ -314,7 +314,7 @@ const Profile = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center space-x-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-6 py-3 rounded-lg font-semibold transition-smooth disabled:opacity-50 shadow-glow"
+                className="flex items-center space-x-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-6 py-3 rounded-lg font-semibold transition-smooth disabled:opacity-50"
               >
                 <FiSave size={18} />
                 <span>{loading ? 'Updating...' : 'Update Password'}</span>
