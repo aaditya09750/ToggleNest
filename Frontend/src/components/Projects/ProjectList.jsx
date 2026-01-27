@@ -115,7 +115,7 @@ const ProjectList = () => {
           {isAdmin && (
             <button
               onClick={() => setShowForm(true)}
-              className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-8 py-3 rounded-lg font-semibold transition-smooth shadow-glow"
+              className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-8 py-3 rounded-lg font-semibold transition-smooth"
             >
               Create Your First Project
             </button>
