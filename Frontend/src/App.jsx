@@ -11,6 +11,7 @@ import DashboardPage from './pages/DashboardPage';
 import ProjectsPage from './pages/ProjectsPage';
 import TaskBoardPage from './pages/TaskBoardPage';
 import ProfilePage from './pages/ProfilePage';
+import NotFound from './components/NotFound';
 import ProtectedRoute from './utils/ProtectedRoute';
 
 function App() {
@@ -57,6 +58,9 @@ function App() {
 
           {/* Default redirect */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+          {/* Catch-all 404 */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>
@@ -64,4 +68,3 @@ function App() {
 }
 
 export default App;
-// Helloworld

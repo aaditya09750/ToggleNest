@@ -5,6 +5,7 @@ import Sidebar from '../components/Layout/Sidebar';
 import KanbanBoard from '../components/Tasks/KanbanBoard';
 import ActivityLog from '../components/ActivityLog/ActivityLog';
 import api from '../utils/api';
+import { logError } from '../utils/logger';
 import { FiArrowLeft } from 'react-icons/fi';
 
 const TaskBoardPage = () => {
@@ -24,7 +25,7 @@ const TaskBoardPage = () => {
       const response = await api.get(`/projects/${projectId}`);
       setProject(response.data);
     } catch (error) {
-      console.error('Error fetching project:', error);
+      logError('Error fetching project:', error);
       alert('Failed to load project. Please try again.');
     } finally {
       setLoading(false);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import api from '../../utils/api';
+import { logError } from '../../utils/logger';
 import TaskCard from './TaskCard';
 import TaskForm from './TaskForm';
 
@@ -37,7 +38,7 @@ const KanbanBoard = ({ projectId }) => {
       setTasks(tasksByStatus);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching tasks:', error);
+      logError('Error fetching tasks:', error);
       setLoading(false);
     }
   };
@@ -81,7 +82,7 @@ const KanbanBoard = ({ projectId }) => {
         status: destination.droppableId,
       });
     } catch (error) {
-      console.error('Error updating task status:', error);
+      logError('Error updating task status:', error);
       // Revert on error
       fetchTasks();
     }
@@ -98,7 +99,7 @@ const KanbanBoard = ({ projectId }) => {
         await api.delete(`/tasks/${taskId}`);
         fetchTasks();
       } catch (error) {
-        console.error('Error deleting task:', error);
+        logError('Error deleting task:', error);
         alert('Failed to delete task');
       }
     }

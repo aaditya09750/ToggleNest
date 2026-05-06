@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
+import { logError } from '../../utils/logger';
 import { FiCheckCircle, FiClock, FiFolder, FiPercent } from 'react-icons/fi';
 
 const Dashboard = () => {
@@ -22,7 +23,7 @@ const Dashboard = () => {
         setActivities(activitiesRes.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        logError('Error fetching dashboard data:', error);
         setLoading(false);
       }
     };

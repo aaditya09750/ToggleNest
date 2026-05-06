@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
+import { logError } from '../../utils/logger';
 import { FiX } from 'react-icons/fi';
 
 const TaskForm = ({ task, projectId, onClose, onSuccess }) => {
@@ -37,7 +38,7 @@ const TaskForm = ({ task, projectId, onClose, onSuccess }) => {
       const response = await api.get('/auth/users');
       setUsers(response.data);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      logError('Error fetching users:', error);
     }
   };
 

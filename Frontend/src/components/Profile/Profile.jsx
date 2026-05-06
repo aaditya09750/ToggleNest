@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FiUser, FiMail, FiLock, FiEdit2, FiSave, FiX } from 'react-icons/fi';
 import api from '../../utils/api';
+import { logError } from '../../utils/logger';
 
 const Profile = () => {
   const [user, setUser] = useState(
@@ -47,7 +48,7 @@ const Profile = () => {
       setIsEditing(false);
       setMessage({ type: 'success', text: 'Profile updated successfully!' });
     } catch (error) {
-      console.error('Profile update error:', error);
+      logError('Profile update error:', error);
       setMessage({
         type: 'error',
         text:
@@ -102,7 +103,7 @@ const Profile = () => {
       setShowPasswordSection(false);
       setMessage({ type: 'success', text: 'Password updated successfully!' });
     } catch (error) {
-      console.error('Password update error:', error);
+      logError('Password update error:', error);
       setMessage({
         type: 'error',
         text:

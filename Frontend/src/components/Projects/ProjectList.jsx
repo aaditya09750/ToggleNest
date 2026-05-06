@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiFolder } from 'react-icons/fi';
 import api from '../../utils/api';
+import { logError } from '../../utils/logger';
 import ProjectCard from './ProjectCard';
 import ProjectForm from './ProjectForm';
 
@@ -22,7 +23,7 @@ const ProjectList = () => {
       const response = await api.get('/projects');
       setProjects(response.data);
     } catch (error) {
-      console.error('Error fetching projects:', error);
+      logError('Error fetching projects:', error);
       alert('Failed to load projects. Please refresh the page.');
     } finally {
       setLoading(false);
@@ -40,7 +41,7 @@ const ProjectList = () => {
         await api.delete(`/projects/${projectId}`);
         fetchProjects();
       } catch (error) {
-        console.error('Error deleting project:', error);
+        logError('Error deleting project:', error);
         alert('Failed to delete project');
       }
     }

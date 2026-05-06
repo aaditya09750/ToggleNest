@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
+import { logError } from '../../utils/logger';
 import { FiActivity, FiUser, FiClock } from 'react-icons/fi';
 
 const ActivityLog = ({ projectId }) => {
@@ -20,7 +21,7 @@ const ActivityLog = ({ projectId }) => {
       setActivities(response.data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching activities:', error);
+      logError('Error fetching activities:', error);
       setLoading(false);
     }
   };

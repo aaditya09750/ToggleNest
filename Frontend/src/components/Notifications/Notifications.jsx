@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiBell, FiX } from 'react-icons/fi';
 import api from '../../utils/api';
+import { logError } from '../../utils/logger';
 
 const Notifications = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Notifications = () => {
       const response = await api.get('/notifications/unread-count');
       setUnreadCount(response.data.count);
     } catch (error) {
-      console.error('Error fetching unread count:', error);
+      logError('Error fetching unread count:', error);
     }
   };
 
@@ -38,7 +39,7 @@ const Notifications = () => {
       const response = await api.get('/notifications');
       setNotifications(response.data);
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      logError('Error fetching notifications:', error);
     } finally {
       setLoading(false);
     }
@@ -50,7 +51,7 @@ const Notifications = () => {
       fetchNotifications();
       fetchUnreadCount();
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      logError('Error marking notification as read:', error);
     }
   };
 
@@ -60,7 +61,7 @@ const Notifications = () => {
       fetchNotifications();
       fetchUnreadCount();
     } catch (error) {
-      console.error('Error marking all as read:', error);
+      logError('Error marking all as read:', error);
     }
   };
 
@@ -81,7 +82,7 @@ const Notifications = () => {
       fetchNotifications();
       fetchUnreadCount();
     } catch (error) {
-      console.error('Error deleting notification:', error);
+      logError('Error deleting notification:', error);
     }
   };
 

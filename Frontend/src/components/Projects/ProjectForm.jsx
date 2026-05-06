@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
+import { logError } from '../../utils/logger';
 
 const ProjectForm = ({ project, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ const ProjectForm = ({ project, onClose, onSuccess }) => {
       const response = await api.get('/auth/users');
       setUsers(response.data);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      logError('Error fetching users:', error);
     }
   };
 
