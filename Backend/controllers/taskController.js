@@ -1,6 +1,28 @@
 const Task = require('../models/Task');
+const Project = require('../models/Project');
 const ActivityLog = require('../models/ActivityLog');
 const Notification = require('../models/Notification');
+
+const TASK_UPDATE_FIELDS = [
+  'title',
+  'description',
+  'status',
+  'priority',
+  'dueDate',
+  'assignedTo',
+];
+
+const pickFields = (source, allowed) =>
+  allowed.reduce((acc, key) => {
+    if (Object.prototype.hasOwnProperty.call(source, key)) acc[key] = source[key];
+    return acc;
+  }, {});
+
+const isProjectMember = (project, userId) => {
+  const uid = String(userId);
+  if (String(project.createdBy) === uid) return true;
+  return (project.members || []).some((m) => String(m) === uid);
+};
 
 // @desc    Get all tasks (optionally filter by project)
 // @route   GET /api/tasks?project=projectId
@@ -8,7 +30,7 @@ const Notification = require('../models/Notification');
 const getTasks = async (req, res) => {
   try {
     const filter = req.query.project ? { project: req.query.project } : {};
-    
+
     const tasks = await Task.find(filter)
       .populate('assignedTo', 'name email')
       .populate('project', 'title')
@@ -63,7 +85,6 @@ const createTask = async (req, res) => {
       createdBy: req.user._id,
     });
 
-    // Log activity
     await ActivityLog.create({
       action: 'Task Created',
       description: `Task "${title}" was created`,
@@ -72,7 +93,6 @@ const createTask = async (req, res) => {
       task: task._id,
     });
 
-    // Create notification if task is assigned
     if (assignedTo && assignedTo !== req.user._id.toString()) {
       await Notification.create({
         recipient: assignedTo,
@@ -98,7 +118,7 @@ const createTask = async (req, res) => {
 
 // @desc    Update task (including status change on drag)
 // @route   PUT /api/tasks/:id
-// @access  Private
+// @access  Private (project member, task creator/assignee, or Admin)
 const updateTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
@@ -107,31 +127,46 @@ const updateTask = async (req, res) => {
       return res.status(404).json({ message: 'Task not found' });
     }
 
+    const project = await Project.findById(task.project);
+    if (!project) {
+      return res.status(404).json({ message: 'Parent project not found' });
+    }
+
+    const isAdmin = req.user.role === 'Admin';
+    const allowed =
+      isAdmin ||
+      isProjectMember(project, req.user._id) ||
+      String(task.createdBy) === String(req.user._id) ||
+      (task.assignedTo && String(task.assignedTo) === String(req.user._id));
+
+    if (!allowed) {
+      return res.status(403).json({ message: 'Not authorized to update this task' });
+    }
+
     const oldStatus = task.status;
     const oldAssignedTo = task.assignedTo;
+    const updates = pickFields(req.body, TASK_UPDATE_FIELDS);
 
-    const updatedTask = await Task.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    )
+    const updatedTask = await Task.findByIdAndUpdate(req.params.id, updates, {
+      new: true,
+      runValidators: true,
+    })
       .populate('assignedTo', 'name email')
       .populate('project', 'title')
       .populate('createdBy', 'name email');
 
-    // Log activity based on what changed
-    if (req.body.status && oldStatus !== req.body.status) {
-      const action = req.body.status === 'Done' ? 'Task Completed' : 'Task Moved';
+    if (updates.status && oldStatus !== updates.status) {
+      const action = updates.status === 'Done' ? 'Task Completed' : 'Task Moved';
       await ActivityLog.create({
         action,
-        description: `Task "${updatedTask.title}" moved from "${oldStatus}" to "${req.body.status}"`,
+        description: `Task "${updatedTask.title}" moved from "${oldStatus}" to "${updates.status}"`,
         user: req.user._id,
         project: updatedTask.project._id,
         task: updatedTask._id,
       });
     }
 
-    if (req.body.assignedTo && String(oldAssignedTo) !== String(req.body.assignedTo)) {
+    if (updates.assignedTo && String(oldAssignedTo) !== String(updates.assignedTo)) {
       await ActivityLog.create({
         action: 'User Assigned',
         description: `Task "${updatedTask.title}" was assigned to a user`,
@@ -140,10 +175,9 @@ const updateTask = async (req, res) => {
         task: updatedTask._id,
       });
 
-      // Create notification for newly assigned user
-      if (req.body.assignedTo !== req.user._id.toString()) {
+      if (updates.assignedTo !== req.user._id.toString()) {
         await Notification.create({
-          recipient: req.body.assignedTo,
+          recipient: updates.assignedTo,
           sender: req.user._id,
           type: 'Task Assigned',
           message: `You have been assigned to task "${updatedTask.title}"`,
@@ -154,7 +188,7 @@ const updateTask = async (req, res) => {
       }
     }
 
-    if (!req.body.status && !req.body.assignedTo) {
+    if (!updates.status && !updates.assignedTo) {
       await ActivityLog.create({
         action: 'Task Updated',
         description: `Task "${updatedTask.title}" was updated`,
@@ -172,7 +206,7 @@ const updateTask = async (req, res) => {
 
 // @desc    Delete task
 // @route   DELETE /api/tasks/:id
-// @access  Private
+// @access  Private (task creator, project creator, or Admin)
 const deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
@@ -181,7 +215,16 @@ const deleteTask = async (req, res) => {
       return res.status(404).json({ message: 'Task not found' });
     }
 
-    // Log activity before deletion
+    const project = await Project.findById(task.project);
+    const isAdmin = req.user.role === 'Admin';
+    const isTaskCreator = String(task.createdBy) === String(req.user._id);
+    const isProjectCreator =
+      project && String(project.createdBy) === String(req.user._id);
+
+    if (!isAdmin && !isTaskCreator && !isProjectCreator) {
+      return res.status(403).json({ message: 'Not authorized to delete this task' });
+    }
+
     await ActivityLog.create({
       action: 'Task Deleted',
       description: `Task "${task.title}" was deleted`,

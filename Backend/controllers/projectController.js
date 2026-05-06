@@ -2,6 +2,14 @@ const Project = require('../models/Project');
 const ActivityLog = require('../models/ActivityLog');
 const Notification = require('../models/Notification');
 
+const PROJECT_UPDATE_FIELDS = ['title', 'description', 'deadline', 'members', 'status'];
+
+const pickFields = (source, allowed) =>
+  allowed.reduce((acc, key) => {
+    if (Object.prototype.hasOwnProperty.call(source, key)) acc[key] = source[key];
+    return acc;
+  }, {});
+
 // @desc    Get all projects
 // @route   GET /api/projects
 // @access  Private
@@ -56,7 +64,6 @@ const createProject = async (req, res) => {
       members: members || [],
     });
 
-    // Log activity
     await ActivityLog.create({
       action: 'Project Created',
       description: `Project "${title}" was created`,
@@ -64,11 +71,10 @@ const createProject = async (req, res) => {
       project: project._id,
     });
 
-    // Create notifications for assigned members
     if (members && members.length > 0) {
       const notifications = members
-        .filter(memberId => memberId !== req.user._id.toString())
-        .map(memberId => ({
+        .filter((memberId) => memberId !== req.user._id.toString())
+        .map((memberId) => ({
           recipient: memberId,
           sender: req.user._id,
           type: 'Project Assigned',
@@ -76,7 +82,7 @@ const createProject = async (req, res) => {
           link: `/projects/${project._id}/tasks`,
           project: project._id,
         }));
-      
+
       if (notifications.length > 0) {
         await Notification.insertMany(notifications);
       }
@@ -94,7 +100,7 @@ const createProject = async (req, res) => {
 
 // @desc    Update project
 // @route   PUT /api/projects/:id
-// @access  Private (Admin only)
+// @access  Private (project creator or Admin)
 const updateProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
@@ -103,15 +109,21 @@ const updateProject = async (req, res) => {
       return res.status(404).json({ message: 'Project not found' });
     }
 
-    const updatedProject = await Project.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    )
+    const isAdmin = req.user.role === 'Admin';
+    const isCreator = String(project.createdBy) === String(req.user._id);
+    if (!isAdmin && !isCreator) {
+      return res.status(403).json({ message: 'Not authorized to update this project' });
+    }
+
+    const updates = pickFields(req.body, PROJECT_UPDATE_FIELDS);
+
+    const updatedProject = await Project.findByIdAndUpdate(req.params.id, updates, {
+      new: true,
+      runValidators: true,
+    })
       .populate('createdBy', 'name email')
       .populate('members', 'name email');
 
-    // Log activity
     await ActivityLog.create({
       action: 'Project Updated',
       description: `Project "${updatedProject.title}" was updated`,
@@ -127,7 +139,7 @@ const updateProject = async (req, res) => {
 
 // @desc    Delete project
 // @route   DELETE /api/projects/:id
-// @access  Private (Admin only)
+// @access  Private (project creator or Admin)
 const deleteProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
@@ -136,7 +148,12 @@ const deleteProject = async (req, res) => {
       return res.status(404).json({ message: 'Project not found' });
     }
 
-    // Log activity before deletion
+    const isAdmin = req.user.role === 'Admin';
+    const isCreator = String(project.createdBy) === String(req.user._id);
+    if (!isAdmin && !isCreator) {
+      return res.status(403).json({ message: 'Not authorized to delete this project' });
+    }
+
     await ActivityLog.create({
       action: 'Project Deleted',
       description: `Project "${project.title}" was deleted`,
