@@ -248,6 +248,55 @@ Register users through the app. First user can be Admin.
 
 ---
 
+## Deployment
+
+ToggleNest is deployed with the **Frontend on Vercel** and the **Backend on Render**, using **MongoDB Atlas** for data.
+
+### Backend → Render
+
+1. Push the repo to GitHub (already at `github.com/aaditya09750/ToggleNest`).
+2. Render Dashboard → **New → Web Service** → connect the repo.
+3. Settings:
+   - **Root Directory:** `Backend`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+   - **Health Check Path:** `/health`
+4. Environment variables:
+   - `NODE_ENV=production`
+   - `MONGO_URI=<your Atlas URI with /TogglenestDB in the path>`
+   - `JWT_SECRET=<64-byte random hex — see .env.example>`
+   - `JWT_EXPIRE=7d`
+   - `CORS_ORIGIN=<your Vercel URL>` (set after frontend deploy)
+   - `PORT=5000`
+5. In MongoDB Atlas → **Network Access** → allow `0.0.0.0/0` (Render free tier IPs are dynamic).
+
+### Frontend → Vercel
+
+1. Vercel Dashboard → **Add New → Project** → import the repo.
+2. Settings:
+   - **Root Directory:** `Frontend`
+   - **Framework Preset:** Create React App (auto-detected)
+3. Environment variables:
+   - `REACT_APP_API_URL=https://<your-render-service>.onrender.com/api`
+4. Deploy → copy the resulting Vercel URL.
+5. Go back to Render → update `CORS_ORIGIN` with the Vercel URL → trigger redeploy.
+
+The included [Frontend/vercel.json](Frontend/vercel.json) handles SPA rewrites so deep-linking to routes like `/dashboard` works.
+
+### Local development
+
+```bash
+# Backend
+cd Backend && npm install && npm run dev
+
+# Frontend (separate terminal)
+cd Frontend && npm install && npm run dev
+```
+
+Both apps need their respective `.env` files — copy from `.env.example` and fill in values.
+
+---
+
 ## License
 
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge&logo=opensourceinitiative&logoColor=white)
@@ -257,7 +306,7 @@ This project is created for portfolio and educational purposes.
 ```
 MIT License
 
-Copyright (c) 2026 Aaditya Gunjal
+Copyright (c) 2025-2026 Aaditya Gunjal
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
