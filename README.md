@@ -15,6 +15,19 @@ A modern, full-stack MERN application for managing team projects, tasks, and wor
 
 ---
 
+## Live Demo
+
+[![Live App](https://img.shields.io/badge/Live%20App-togglenest.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://togglenest.vercel.app/)
+[![API](https://img.shields.io/badge/API-togglenest--api.onrender.com-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://togglenest-api.onrender.com/)
+
+- **Frontend (Vercel):** https://togglenest.vercel.app/
+- **Backend API (Render):** https://togglenest-api.onrender.com/
+- **Health check:** https://togglenest-api.onrender.com/health
+
+> The backend is hosted on Render's free tier and sleeps after 15 minutes of inactivity. The first request after sleep takes ~30 seconds to wake up — subsequent requests are fast.
+
+---
+
 ## Core Features
 
 - **Authentication:** JWT-based login, registration, protected routes, role-based access (Admin/Team Member)
@@ -250,7 +263,13 @@ Register users through the app. First user can be Admin.
 
 ## Deployment
 
-ToggleNest is deployed with the **Frontend on Vercel** and the **Backend on Render**, using **MongoDB Atlas** for data.
+ToggleNest is live with the **Frontend on Vercel**, **Backend on Render**, and **MongoDB Atlas** for data.
+
+| Service | URL |
+| --- | --- |
+| Frontend (Vercel) | https://togglenest.vercel.app/ |
+| Backend API (Render) | https://togglenest-api.onrender.com/ |
+| Health check | https://togglenest-api.onrender.com/health |
 
 ### Backend → Render
 
@@ -261,12 +280,13 @@ ToggleNest is deployed with the **Frontend on Vercel** and the **Backend on Rend
    - **Build Command:** `npm install`
    - **Start Command:** `npm start`
    - **Health Check Path:** `/health`
+   - **Region:** Singapore (or whichever is closest to your users)
 4. Environment variables:
    - `NODE_ENV=production`
    - `MONGO_URI=<your Atlas URI with /TogglenestDB in the path>`
    - `JWT_SECRET=<64-byte random hex — see .env.example>`
    - `JWT_EXPIRE=7d`
-   - `CORS_ORIGIN=<your Vercel URL>` (set after frontend deploy)
+   - `CORS_ORIGIN=http://localhost:3000,https://togglenest.vercel.app` (comma-separated)
    - `PORT=5000`
 5. In MongoDB Atlas → **Network Access** → allow `0.0.0.0/0` (Render free tier IPs are dynamic).
 
@@ -277,9 +297,9 @@ ToggleNest is deployed with the **Frontend on Vercel** and the **Backend on Rend
    - **Root Directory:** `Frontend`
    - **Framework Preset:** Create React App (auto-detected)
 3. Environment variables:
-   - `REACT_APP_API_URL=https://<your-render-service>.onrender.com/api`
+   - `REACT_APP_API_URL=https://togglenest-api.onrender.com/api`
 4. Deploy → copy the resulting Vercel URL.
-5. Go back to Render → update `CORS_ORIGIN` with the Vercel URL → trigger redeploy.
+5. Go back to Render → update `CORS_ORIGIN` to include the Vercel URL → trigger redeploy.
 
 The included [Frontend/vercel.json](Frontend/vercel.json) handles SPA rewrites so deep-linking to routes like `/dashboard` works.
 
