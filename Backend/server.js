@@ -27,7 +27,7 @@ app.use('/api/notifications', require('./routes/notificationRoutes'));
 // Welcome route
 app.get('/', (req, res) => {
   res.json({
-    message: '🚀 Welcome to ToggleNest API',
+    message: 'Welcome to ToggleNest API !!',
     version: '1.0.0',
     endpoints: {
       auth: '/api/auth',
@@ -48,6 +48,6 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
