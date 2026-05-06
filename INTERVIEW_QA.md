@@ -5,7 +5,7 @@
 ## Difficulty Legend
 
 - 🟢 **Basic** — fundamentals an interviewer expects you to know cold
-- 🟡 **Intermediate** — how it's wired in *this* project
+- 🟡 **Intermediate** — how it's wired in this project
 - 🔴 **Advanced** — tradeoffs, alternatives, edge cases
 
 ## Table of Contents
