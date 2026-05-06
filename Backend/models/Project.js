@@ -37,4 +37,8 @@ const projectSchema = new mongoose.Schema(
   }
 );
 
+projectSchema.index({ createdBy: 1 });
+projectSchema.index({ members: 1 });
+projectSchema.index({ status: 1 });
+
 module.exports = mongoose.model('Project', projectSchema);
